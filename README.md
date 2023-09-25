@@ -14,4 +14,5 @@ Projeto de cadastro de professores e alunos, do curso de back-end com .NET da in
  
 ## Autor
 Victor Hugo Luz de Assis
+
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/victor-hugo-luz)
