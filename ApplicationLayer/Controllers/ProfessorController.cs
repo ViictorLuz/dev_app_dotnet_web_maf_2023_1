@@ -32,7 +32,7 @@ namespace ApplicationLayer.Controllers
         [HttpPost]
         [SwaggerOperation("cadastra um novo professor")]
         [SwaggerResponse(201)] // Create
-        [SwaggerResponse(400)] //bad  request
+        [SwaggerResponse(400)] // bad  request
         public ActionResult<Professor> Register([FromBody] Professor professor)
         {
             if (professor.Conhecimentos.Count() <= 0)
@@ -40,7 +40,7 @@ namespace ApplicationLayer.Controllers
                 return BadRequest();
             }
 
-            _professorService.RegistraProfessor(professor);
+            _professorService.Registra(professor);
 
             return Created("", professor);
         }
@@ -52,11 +52,11 @@ namespace ApplicationLayer.Controllers
         /// <returns>200, 400</returns>
         [HttpGet("lista")]
         [SwaggerOperation("lista os professores")]
-        [SwaggerResponse(200)] //Ok
-        [SwaggerResponse(400)] //bad  request
+        [SwaggerResponse(200)] // Ok
+        [SwaggerResponse(400)] // bad  request
         public ActionResult<IEnumerable<Professor>> Lista()
         {
-            var professores = _professorService.ListaProfessores();
+            var professores = _professorService.Lista();
 
             return Ok(professores);
         }
@@ -72,7 +72,7 @@ namespace ApplicationLayer.Controllers
         [SwaggerResponse(400)] //bad  request
         public ActionResult<IEnumerable<Professor>> Busca(string nome)
         {
-            return Ok(_professorService.BuscaProfessor(nome));
+            return Ok(_professorService.Busca(nome));
         }
 
         /// <summary>
@@ -82,11 +82,11 @@ namespace ApplicationLayer.Controllers
         /// <returns>200, 400</returns>
         [HttpPatch()]
         [SwaggerOperation("atualiza um professor")]
-        [SwaggerResponse(200)] //OK
-        [SwaggerResponse(400)] //bad  request
+        [SwaggerResponse(200)] // OK
+        [SwaggerResponse(400)] // bad  request
         public ActionResult<Professor> Atualiza(Professor professor)
         {
-            return Ok(_professorService.AtualizarProfessor(professor));
+            return Ok(_professorService.Atualiza(professor));
         }
 
         /// <summary>
@@ -96,11 +96,11 @@ namespace ApplicationLayer.Controllers
         /// <returns>202, 400</returns>
         [HttpDelete()]
         [SwaggerOperation("apaga um professore pelo id")]
-        [SwaggerResponse(202)] //OK
-        [SwaggerResponse(400)] //bad  request
+        [SwaggerResponse(202)] // OK
+        [SwaggerResponse(400)] // bad  request
         public ActionResult Deleta(Guid id)
         {
-            _professorService.ApagaProfessor(id);
+            _professorService.Apaga(id);
             return Accepted();
         }
 

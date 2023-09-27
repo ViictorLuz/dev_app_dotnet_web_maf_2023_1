@@ -1,8 +1,8 @@
 ﻿using DomainLayer.Models;
 
-namespace DomainLayer.Interfaces.Service
+namespace DomainLayer.Interfaces.Repository
 {
-	public interface IProfessorService
+	public interface IProfessorRepository
 	{
 		Professor Registra(Professor professor);
 		IEnumerable<Professor> Lista();
