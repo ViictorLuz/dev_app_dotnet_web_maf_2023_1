@@ -1,3 +1,4 @@
+using DomainLayer.Interfaces.Repository;
 using DomainLayer.Interfaces.Service;
 using DomainLayer.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,8 @@ namespace ApplicationLayer.Controllers
         {
             _logger = logger;
             _alunoService = alunoService;
-        }
+
+		}
 
 		/// <summary>
 		/// Método responsável por listar todos os alunos cadastrados
@@ -42,7 +44,7 @@ namespace ApplicationLayer.Controllers
 		[SwaggerOperation("Registra aluno")]
 		[SwaggerResponse(201)]
 		[SwaggerResponse(400)]
-		public ActionResult<Aluno> Registra([FromBody] Aluno aluno)
+		public ActionResult<Aluno> RegistraAsync([FromBody] Aluno aluno)
 		{
 			var alunos = _alunoService.Registra(aluno);
 
@@ -57,7 +59,7 @@ namespace ApplicationLayer.Controllers
 		[SwaggerOperation("Busca o(s) aluno(s)")]
 		[SwaggerResponse(200)]
 		[SwaggerResponse(400)]
-		public ActionResult<IEnumerable<Aluno>> Busca([FromRoute] string nome)
+		public ActionResult<IEnumerable<Aluno>> BuscaAsync([FromRoute] string nome)
 		{
 			var alunos = _alunoService.Lista();
 
@@ -72,7 +74,7 @@ namespace ApplicationLayer.Controllers
 		[SwaggerOperation("Atualiza aluno")]
 		[SwaggerResponse(204)]
 		[SwaggerResponse(400)]
-		public ActionResult<Aluno> Atualiza([FromBody] Aluno aluno)
+		public ActionResult<Aluno> AtualizaAsync([FromBody] Aluno aluno)
 		{
 			_ = _alunoService.Atualiza(aluno);
 
@@ -87,7 +89,7 @@ namespace ApplicationLayer.Controllers
 		[SwaggerOperation("Apaga aluno")]
 		[SwaggerResponse(204)]
 		[SwaggerResponse(400)]
-		public ActionResult<Aluno> Apaga([FromRoute] Guid id)
+		public ActionResult<Aluno> ApagaAsync([FromRoute] Guid id)
 		{
 			_alunoService.Apaga(id);
 
