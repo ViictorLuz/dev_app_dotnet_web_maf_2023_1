@@ -1,7 +1,6 @@
-﻿using DomainLayer.Interfaces.Repository;
+﻿using ApplicationLayer;
+using DomainLayer.Interfaces.Repository;
 using DomainLayer.Interfaces.Service;
-using DomainLayer.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ServiceLayer
 {
@@ -10,20 +9,19 @@ namespace ServiceLayer
 		private readonly IProfessorRepository _repository;
 
 		public ProfessorService(IProfessorRepository repository) => _repository = repository;
+		
+		public async Task Apaga(Guid id) => await _repository.Apaga(id);
+		
+		public async Task Atualiza(Professor professor) => await _repository.Atualiza(professor);
+		
+		public async Task<IEnumerable<Professor>> Busca(string nome) => await _repository.Busca(nome);
+		
+		public async Task<IEnumerable<Professor>> Lista() => await _repository.Lista();
+		
+		public async Task Registra(Professor professor) => await _repository.Registra(professor);
 
-		/// <summary>
-		/// Método responsável por salvar os dados de um professor
-		/// </summary>
-		/// <param name="professor"></param>
-		/// <returns>professor</returns>
-		public Professor Registra(Professor professor) => _repository.Registra(professor);
 
-		public IEnumerable<Professor> Lista() => _repository.Lista();
 
-		public IEnumerable<Professor> Busca(string nome) => _repository.Busca(nome);
 
-		Professor IProfessorService.Atualiza(Professor professor) => _repository.Atualiza(professor);
-
-		void IProfessorService.Apaga(Guid id) => _repository.Apaga(id);
 	}
 }

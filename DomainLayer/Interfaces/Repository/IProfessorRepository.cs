@@ -1,13 +1,13 @@
-﻿using DomainLayer.Models;
+﻿using ApplicationLayer;
 
 namespace DomainLayer.Interfaces.Repository
 {
 	public interface IProfessorRepository
 	{
-		Professor Registra(Professor professor);
-		IEnumerable<Professor> Lista();
-		IEnumerable<Professor> Busca(string nome);
-		Professor Atualiza(Professor professor);
-		void Apaga(Guid id);
+		Task Registra(Professor professor);
+		Task<IEnumerable<Professor>> Lista();
+		Task<IEnumerable<Professor>> Busca(string nome);
+		Task Atualiza(Professor professor);
+		Task Apaga(Guid id);
 	}
 }

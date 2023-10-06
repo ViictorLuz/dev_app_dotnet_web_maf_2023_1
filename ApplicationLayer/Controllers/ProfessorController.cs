@@ -1,7 +1,5 @@
 ﻿using DomainLayer.Interfaces.Service;
-using DomainLayer.Models;
 using Microsoft.AspNetCore.Mvc;
-using ServiceLayer;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ApplicationLayer.Controllers
@@ -10,7 +8,7 @@ namespace ApplicationLayer.Controllers
     /// Controller responsável por gerenciar o cadastro de professores
     /// </summary>
     [ApiController]
-    [Route("[Controller]")]
+    [Route("api/professor")]
     public class ProfessorController : ControllerBase
     {
         private readonly ILogger<ProfessorController> _logger;
@@ -23,6 +21,20 @@ namespace ApplicationLayer.Controllers
             _professorService = professorService;
         }
 
+        /// <summary>
+        /// Método responsável por listar todos os professores cadastrados
+        /// </summary>
+        /// <returns>200, 400</returns>
+        [HttpGet]
+        [SwaggerOperation("lista os professores")]
+        [SwaggerResponse(200)]
+        [SwaggerResponse(400)]
+        public async Task<ActionResult<IEnumerable<Professor>>> ListaAsync()
+        {
+            var professores = await _professorService.Lista();
+
+            return Ok(professores);
+        }
 
         /// <summary>
         /// Método responsável por cadastrar um professorer
@@ -30,79 +42,67 @@ namespace ApplicationLayer.Controllers
         /// <param name="professor"></param>
         /// <returns>201, 400</returns>
         [HttpPost]
-        [SwaggerOperation("cadastra um novo professor")]
-        [SwaggerResponse(201)] // Create
-        [SwaggerResponse(400)] // bad  request
-        public ActionResult<Professor> Register([FromBody] Professor professor)
+        [SwaggerOperation("Registra professor")]
+        [SwaggerResponse(201)]
+        [SwaggerResponse(400)]  
+        public async Task<ActionResult> RegistraAsync([FromBody] Professor professor)
         {
             if (professor.Conhecimentos.Count() <= 0)
             {
                 return BadRequest();
             }
 
-            _professorService.Registra(professor);
+            await _professorService.Registra(professor);
 
-            return Created("", professor);
+            return Created("", ""); // professor
         }
 
-
         /// <summary>
-        /// Método responsável por retornar a lista de professores
+        /// Método responsável por buscar professor pelo nome
         /// </summary>
+        /// <param name="nome">Nome do professor</param>
         /// <returns>200, 400</returns>
-        [HttpGet("lista")]
-        [SwaggerOperation("lista os professores")]
-        [SwaggerResponse(200)] // Ok
-        [SwaggerResponse(400)] // bad  request
-        public ActionResult<IEnumerable<Professor>> Lista()
+        [HttpGet("{nome}")]
+        [SwaggerOperation("Busca o(s) professor(es)")]
+        [SwaggerResponse(200)]
+        [SwaggerResponse(400)]
+        public async Task<ActionResult<IEnumerable<Professor>>> BuscaAsync(string nome)
         {
-            var professores = _professorService.Lista();
+            var professores = await _professorService.Busca(nome);
 
             return Ok(professores);
         }
 
         /// <summary>
-        /// Método responsável por retornar um professor localizado pelo nome
-        /// </summary>
-        /// <param name="nome">Nome do professor</param>
-        /// <returns>200, 400</returns>
-        [HttpGet("busca")]
-        [SwaggerOperation("busca um professore pelo nome")]
-        [SwaggerResponse(200)] //OK
-        [SwaggerResponse(400)] //bad  request
-        public ActionResult<IEnumerable<Professor>> Busca(string nome)
-        {
-            return Ok(_professorService.Busca(nome));
-        }
-
-        /// <summary>
-        /// Método responsável por atualizar um professor
+        /// Método responsável por atualizar um professor no sistema
         /// </summary>
         /// <param name="professor">Objeto de professor</param>
-        /// <returns>200, 400</returns>
+        /// <returns>204, 400</returns>
         [HttpPatch()]
-        [SwaggerOperation("atualiza um professor")]
-        [SwaggerResponse(200)] // OK
-        [SwaggerResponse(400)] // bad  request
-        public ActionResult<Professor> Atualiza(Professor professor)
+        [SwaggerOperation("atualiza professor")]
+        [SwaggerResponse(204)]
+        [SwaggerResponse(400)]
+        public async Task<ActionResult> AtualizaAsync([FromBody]Professor professor)
         {
-            return Ok(_professorService.Atualiza(professor));
+            await _professorService.Atualiza(professor);
+
+            return NoContent();
         }
 
         /// <summary>
-        /// Método responsável por apagar um professor pelo id
+        /// Método responsável por apagar um professor no sistema
         /// </summary>
         /// <param name="id">Identificador único do professor</param>
-        /// <returns>202, 400</returns>
-        [HttpDelete()]
-        [SwaggerOperation("apaga um professore pelo id")]
-        [SwaggerResponse(202)] // OK
-        [SwaggerResponse(400)] // bad  request
-        public ActionResult Deleta(Guid id)
+        /// <returns>204, 400</returns>
+        [HttpDelete("{id}")]
+        [SwaggerOperation("apaga um professore")]
+        [SwaggerResponse(204)]
+        [SwaggerResponse(400)]
+        public async Task<ActionResult> ApagaAsync([FromRoute] Guid id)
         {
-            _professorService.Apaga(id);
-            return Accepted();
-        }
+            await _professorService.Apaga(id);
 
+            return NoContent();
+        }
     }
 }

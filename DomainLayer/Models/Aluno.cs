@@ -1,4 +1,4 @@
-namespace DomainLayer.Models
+namespace ApplicationLayer
 {
     //Classe Modelo
     public class Aluno

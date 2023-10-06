@@ -1,4 +1,6 @@
-﻿using DomainLayer.Interfaces.Infrastructure;
+﻿using System.ComponentModel;
+using Dapper;
+using DomainLayer.Interfaces.Infrastructure;
 using DomainLayer.Interfaces.Repository;
 using DomainLayer.Interfaces.Service;
 using InfrastructureLayer.Data.Repository;
@@ -47,6 +49,8 @@ namespace ApplicationLayer.Configuration
 			services.AddSingleton<ISqlServerConnectionProvider, SqlServerConnectionProvider>();
             services.AddScoped<IAlunoRepository, AlunoRepository>();
 			services.AddScoped<IProfessorRepository, ProfessorRepository>();
+            SqlMapper.AddTypeHandler(new DateOnlyHandler());
+            SqlMapper.AddTypeHandler(new TimeOnlyHandler());
 		}
 
         /// <summary>
